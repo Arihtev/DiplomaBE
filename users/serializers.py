@@ -36,7 +36,7 @@ class OwnerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'gender', 'photo')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'gender', 'photo', 'phone', 'birth_date')
 
     def get_image_url(self, obj):
         return "http://127.0.0.1:8000/media/" + str(obj.photo)
