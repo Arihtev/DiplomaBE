@@ -118,6 +118,24 @@ class CarCreateView(generics.CreateAPIView):
     #     raise Exception(owner)
 
 
+class CarUpdateView(APIView):
+    queryset = Car.objects.all()
+    serializer_class = CarCreateSerializer
+    lookup_field = 'pk'
+
+    # permission_classes = [IsUser]
+
+    def patch(self, request, *args, **kwargs):
+        # raise ValueError(self.kwargs.get('pk'))
+        pk = self.kwargs.get('pk')
+        car = Car.objects.get(id=pk)
+        serializer = CarCreateSerializer(car, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_200_OK, data=serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST, data="wrong parameters")
+
+
 class PictureCreateView(generics.CreateAPIView):
     queryset = Picture.objects.all()
     serializer_class = PicSerializer

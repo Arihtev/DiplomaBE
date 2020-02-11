@@ -53,7 +53,7 @@ class OwnUserRUD(generics.RetrieveUpdateAPIView):
     # permission_classes = [IsUser]
 
     def patch(self, request, *args, **kwargs):
-        user = User.objects.get(id=1)
+        user = User.objects.get(id=request.user.id)
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -70,10 +70,10 @@ class AddFavourite(APIView):
         if user.favourite_cars.filter(id=car.id).exists():
             user.favourite_cars.remove(car)
             # raise ValueError("Exists")
-            return Response("Премахнат от любими!", status=status.HTTP_200_OK)
+            return Response("USER.REMOVED", status=status.HTTP_200_OK)
 
         user.favourite_cars.add(car)
-        return Response("Добавен в любими!", status=status.HTTP_200_OK)
+        return Response("USER.ADDED", status=status.HTTP_200_OK)
 # self.request.user.favourite_cars.all()
 
 
