@@ -53,7 +53,12 @@ class OwnUserRUD(generics.RetrieveUpdateAPIView):
     # permission_classes = [IsUser]
 
     def patch(self, request, *args, **kwargs):
-        user = User.objects.get(id=request.user.id)
+        user = User.objects.get(id=request.data['id'])
+        if request.data['password']:
+            user.set_password(request.data['password'])
+            # raise ValueError(user.password)
+            user.save()
+            return Response(status=status.HTTP_200_OK)
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
